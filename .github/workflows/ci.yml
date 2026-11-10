@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Build & Test Cairo Smart Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-version: "2.21.0"
+      - name: Format Check
+        run: scarb fmt --check
+      - name: Compile Contracts
+        run: scarb build
+      - name: Run Test Suite
+        run: scarb test
